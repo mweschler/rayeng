@@ -2,6 +2,8 @@
 #include "raygame.h"
 #include "redeng_platform.h"
 
+#include <string>
+
 struct ColorRGB {
 	float R;
 	float G;
@@ -44,9 +46,11 @@ void DrawRectangle(game_back_buffer *Buffer, Rectangle rect, ColorRGB color)
 }
 
 
-void RayGame()
+void RayGame(float deltaMS)
 {
-
+	char buffer[250];
+	sprintf_s(buffer, 250, "Elapsed delta time: %f", deltaMS);
+	DebugLog(buffer);
 }
 
 void RayRender(game_back_buffer& BackBuffer)

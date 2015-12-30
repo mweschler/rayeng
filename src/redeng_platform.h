@@ -10,4 +10,6 @@ struct game_back_buffer
 	int BytesPerPixel;
 };
 
+void DebugLog(char* text);
+
 #endif

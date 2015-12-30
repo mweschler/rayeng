@@ -2,6 +2,6 @@
 #define _RAY_GAME_H_
 struct game_back_buffer;
 
-void RayGame();
+void RayGame(float deltaMS);
 void RayRender(game_back_buffer&);
 #endif

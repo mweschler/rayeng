@@ -11,6 +11,11 @@ static win32_back_buffer sBackBuffer = {};
 static int32 sWindowWidth = 800;
 static int32 sWindowHeight = 600;
 
+void DebugLog(char* text)
+{
+	OutputDebugString(text);
+}
+
 LRESULT CALLBACK WndProc(HWND Window, UINT Message, WPARAM WParam, LPARAM LParam)
 {
 	LRESULT Result = 0;
@@ -65,6 +70,15 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE UNREF(PrevInstance), LPSTR UN
 		{ 
 			Win32ResizeBackBuffer(&sBackBuffer, sWindowWidth, sWindowHeight);
 
+			LARGE_INTEGER frequency;
+			if (!QueryPerformanceFrequency(&frequency))
+			{
+				//handle error
+			}
+
+			LARGE_INTEGER start;
+			QueryPerformanceCounter(&start);
+
 			while (sIsRunning)
 			{
 				MSG Message;
@@ -81,7 +95,12 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE UNREF(PrevInstance), LPSTR UN
 				BackBuffer.Pitch = sBackBuffer.Pitch;
 				BackBuffer.BytesPerPixel = sBackBuffer.BytesPerPixel;
 
-				RayGame();
+				LARGE_INTEGER end;
+				QueryPerformanceCounter(&end);
+				float elapsedMS = (static_cast<float>(end.QuadPart - start.QuadPart) / frequency.QuadPart) * 1000.0f;
+				start = end;
+
+				RayGame(elapsedMS);
 
 				Win32ClearBackBuffer(&sBackBuffer);
 				RayRender(BackBuffer);
